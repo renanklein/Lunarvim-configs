@@ -8,7 +8,7 @@ lvim.plugins = {
   "mfussenegger/nvim-dap",
   "leoluz/nvim-dap-go"
 }
-
+vim.opt.relativenumber = true
 vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "jdtls" })
 
 lvim.builtin.treesitter.ensure_installed = {
@@ -23,7 +23,7 @@ lvim.builtin.treesitter.ensure_installed = {
 -- vim.opt.wrap = false
 
 -- -- keymappings
--- lvim.leader = "space"
+lvim.leader = "space"
 -- vim.cmd [[
 -- nnoremap Y y$
 
@@ -311,6 +311,9 @@ lvim.builtin.dap.on_config_done = function(dap)
 end
 
 vim.api.nvim_set_keymap("n", "<m-d>", "<cmd>RustOpenExternalDocs<Cr>", { noremap = true, silent = true })
+lvim.keys.normal_mode["<leader>t"] = ":ToggleTerm direction=float<CR>"
+lvim.keys.normal_mode["<leader>e"] = false
+lvim.keys.normal_mode["-"] = ":Oil<CR>"
 
 lvim.builtin.which_key.mappings["C"] = {
   name = "Rust",
@@ -330,8 +333,7 @@ lvim.builtin.which_key.mappings["C"] = {
   P = { "<cmd>lua require'crates'.show_popup()<cr>", "[crates] show popup" },
   i = { "<cmd>lua require'crates'.show_crate_popup()<cr>", "[crates] show info" },
   f = { "<cmd>lua require'crates'.show_features_popup()<cr>", "[crates] show features" },
-  D = { "<cmd>lua require'crates'.show_dependencies_popup()<cr>", "[crates] show dependencies" },
-}
+  D = { "<cmd>lua require'crates'.show_dependencies_popup()<cr>", "[crates] show dependencies" }, }
 
 lvim.plugins = {
   "simrat39/rust-tools.nvim",
@@ -357,4 +359,22 @@ lvim.plugins = {
       require("fidget").setup()
     end,
   },
+  {
+    'akinsho/toggleterm.nvim',
+    version = "*",
+    config = function ()
+      require("toggleterm").setup({})
+      vim.keymap.set("n", "<leader>t", ":ToggleTerm direction=float<CR>", {})
+
+    end
+  },
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    config = function ()
+      require("oil").setup({})
+    end,
+    dependencies = {{"echasnovski/mini.icons", opts = {}}},
+    lazy = false
+  }
 }
